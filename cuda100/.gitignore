@@ -1,0 +1,16 @@
+conda-meta/
+DLLs/
+include/
+Lib/
+Library/
+libs/
+Scripts/
+share/
+sip/
+tcl/
+Tools/
+*.dll
+*.exe
+*.pdb
+qt.conf
+broken.png
