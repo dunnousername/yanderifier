@@ -1,5 +1,6 @@
 # coding: utf-8
 print("If you are reading this, I'm not dead yet.")
+print("Loading...")
 
 progress = 0
 progress_max = 0
@@ -181,7 +182,7 @@ def worker_thread(vid0n, img0n, vid1n, cpu):
             while True:
                 try:
                     im = vid0r.get_next_data()
-                except imageio.core.CannotReadFrameError:
+                except (IndexError, imageio.core.CannotReadFrameError):
                     break
                 else:
                     vid0.append(resize(im, (256, 256))[..., :3])

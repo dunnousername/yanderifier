@@ -39,6 +39,6 @@ if (Test-Path '.\yanderify\checkpoint.tar') {
 }
 
 echo 'starting post-install script'
-cmd /k ($installdir + '\Scripts\activate.bat') "&" powershell -File install\windows\postinstall.ps1
-cmd /k ($installdir + '\Scripts\activate.bat') "&" powershell -File install\windows\postinstall2.ps1
+cmd /k ('"' + $installdir + '\Scripts\activate.bat' + '"') "&" powershell -ExecutionPolicy bypass -File install\windows\postinstall.ps1
+cmd /k ('"' + $installdir + '\Scripts\activate.bat' + '"') "&" powershell -ExecutionPolicy bypass -File install\windows\postinstall2.ps1
 exit /b
