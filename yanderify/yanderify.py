@@ -1,6 +1,11 @@
 # coding: utf-8
-print("If you are reading this, I'm not dead yet.")
 print("Loading...")
+
+import hhelper
+import warnings
+
+h_helper = hhelper.HHelper()
+h_helper.forward(0.5)
 
 progress = 0
 progress_max = 0
@@ -11,45 +16,56 @@ try:
 except ImportError:
     ffmpeg_flags = False
 
-import matplotlib
-matplotlib.use('Agg')
-from tkinter import *
-from tkinter import filedialog
-from tkinter import scrolledtext
-from tkinter.ttk import *
-import os
-import queue
-import shlex
-import shutil
-import subprocess
-import threading
-import traceback
-import imageio
-import torch
-from skimage import img_as_ubyte, img_as_float
-import skimage.transform as transform
-import cv2
-import numpy as np
-import webbrowser
-from demo import *
+h_helper.forward(1.5)
+
+with warnings.catch_warnings():
+    warnings.simplefilter('ignore')
+    import matplotlib
+    matplotlib.use('Agg')
+    from tkinter import *
+    from tkinter import filedialog
+    from tkinter import scrolledtext
+    from tkinter.ttk import *
+    import os
+    import queue
+    import shlex
+    import shutil
+    import subprocess
+    import threading
+    import traceback
+
+    h_helper.forward(3.5)
+    import imageio
+    import torch
+    from skimage import img_as_ubyte, img_as_float
+    import skimage.transform as transform
+    import cv2
+    import numpy as np
+    import webbrowser
+    from demo import *
 
 # written by dunnousername#8672
 
-print('Loading checkpoints...')
+#print('Loading checkpoints...')
+
+h_helper.forward(5.5)
 
 checkpoints = {
     'cpu': True
 }
 
 def reload():
-    global checkpoints
-    demo_g, demo_kp = load_checkpoints('../fomm/config/vox-256.yaml', 'checkpoint.tar', cpu=checkpoints['cpu'])
-    checkpoints['g'] = demo_g
-    checkpoints['kp'] = demo_kp
+    with warnings.catch_warnings():
+        global checkpoints
+        warnings.simplefilter('ignore')
+        demo_g, demo_kp = load_checkpoints('../fomm/config/vox-256.yaml', 'checkpoint.tar', cpu=checkpoints['cpu'])
+        checkpoints['g'] = demo_g
+        checkpoints['kp'] = demo_kp
 
 reload()
 
-print('Initializing windows...')
+h_helper.forward(8.5)
+#print('Initializing windows...')
 
 root = Tk()
 use_cpu = IntVar()
@@ -300,6 +316,8 @@ class Yanderify(Frame):
                 write(msg)
         except queue.Empty:
             self.after(50, self.process_queue)
+
+h_helper.finish()
 
 app = Yanderify(master=root)
 app.mainloop()
