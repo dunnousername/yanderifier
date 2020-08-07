@@ -17,7 +17,7 @@ $installdir = (Get-Item .).FullName + '\miniconda'
 if (Test-Path $installdir) {
     echo 'Using existing installation'
 } else {
-    .\miniconda.exe /InstallationType=JustMe /AddToPath=0 /RegisterPython=0 /S /D=$installdir
+    start -Wait -NoNewWindow -FilePath .\miniconda.exe -ArgumentList "/InstallationType=JustMe","/AddToPath=0","/RegisterPython=0","/S","/D=$installdir"
 }
 
 if (Test-Path '.\fomm.zip') {
@@ -39,6 +39,6 @@ if (Test-Path '.\yanderify\checkpoint.tar') {
 }
 
 echo 'starting post-install script'
-cmd /k ('"' + $installdir + '\Scripts\activate.bat' + '"') "&" powershell -ExecutionPolicy bypass -File install\windows\postinstall.ps1
-cmd /k ('"' + $installdir + '\Scripts\activate.bat' + '"') "&" powershell -ExecutionPolicy bypass -File install\windows\postinstall2.ps1
+cmd /k call ('"' + $installdir + '\Scripts\activate.bat' + '"') "&" powershell -ExecutionPolicy bypass -File install\windows\postinstall.ps1
+cmd /k call ('"' + $installdir + '\Scripts\activate.bat' + '"') "&" powershell -ExecutionPolicy bypass -File install\windows\postinstall2.ps1
 exit /b
