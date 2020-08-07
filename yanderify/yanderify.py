@@ -214,6 +214,7 @@ def worker_thread(vid0n, img0n, vid1n, cpu):
             q.put('Sources loaded')
             for frame in make_animation_modified(img0, vid0, checkpoints['g'], checkpoints['kp'], cpu=cpu):
                 vid1.append(img_as_ubyte(resize(frame, size)))
+            print('Writing output to file...')
             imageio.mimsave('tmp.mp4', vid1, fps=fps)
             q.put('Muxing audio streams into output file...')
             cmd = shlex.split('ffmpeg -y -hide_banner -loglevel warning -i tmp.mp4 -i')
