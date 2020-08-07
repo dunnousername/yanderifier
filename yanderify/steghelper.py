@@ -23,16 +23,17 @@
 # Last updated: 1596509893 seconds since Jan 01, 1970 (UTC)
 
 # This adds metadata to the video output. You probably won't notice these, and they don't show in embeds.
-ffmpeg_flags = ' '.join([
+ffmpeg_flags = [
 # the year is 1686, after the i686 microarchitecture. it's just a nerd thing.
-    '-metadata year="1686"',
+    '-metadata', 'year="1686"',
 # the "show" (whatever that means) is opus, the name of an open source audio codec.
 # you've probably used it before without knowing it.
 # the fact that an open standard can succeed in such wide adoption is amazing.
 # again, just a nerd thing.
-    '-metadata show="opus"',
+    '-metadata', 'show="opus"',
 # the episode number is 47. I've never actually played the game, but it seems quite good.
-    '-metadata episode_id="47"'
-])
+    '-metadata', 'episode_id="47"',
+    '-movflags', 'use_metadata_tags'
+]
 
 # this concludes the file I wrote when I should have been writing actually useful code.

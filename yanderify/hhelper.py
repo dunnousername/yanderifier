@@ -48,7 +48,7 @@ class HHelper:
     def username(self):
         return getpass.getuser()
     def sleep(self):
-        time.sleep(1.5 + random.random())
+        time.sleep(0.5 + random.random())
     def forward(self, point):
         if not self.enabled:
             return

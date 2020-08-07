@@ -220,7 +220,7 @@ def worker_thread(vid0n, img0n, vid1n, cpu):
             cmd.append(vid0n)
             cmd.extend(shlex.split('-map 0:v -map 1:a -movflags faststart -c:v libx264 -pix_fmt yuv420p -x264-params "nal-hrd=cbr" -b:v 1200K -minrate 1200K -maxrate 1200K -bufsize 2M'))
             if ffmpeg_flags:
-                cmd.extend(shlex.split(ffmpeg_flags))
+                cmd.extend(ffmpeg_flags)
             cmd.append(vid1n)
             output = subprocess.check_output(cmd, stderr=subprocess.STDOUT)
             q.put(output)
@@ -300,11 +300,11 @@ class Yanderify(Frame):
         self.progress_bar.grid(row=1, column=0, columnspan=4)
         st = scrolledtext.ScrolledText(master, state=DISABLED)
         st.grid(row=2, column=0, columnspan=5, rowspan=7)
-        write('Started Yanderify 3.0.0-alpha-0')
+        write('Started Yanderify 3.0.0-stable')
         write('Warning: This is not a stable release and should not be treated as such.')
         write('Disclaimer: CPU mode on low-end computers or most laptops generally will cause the system to lock-up.')
         write('We are not liable if you freeze your PC by refusing to listen to this advice.')
-        write('Written by dunnousername#86??__Æ¶∬∬rundll32∟err⁉ro▚▒◑◑➽unexpe')
+        write('Written by dunnousername#8672.')
         write('heavily inspired by windy\'s efforts')
 
     def process_queue(self):
