@@ -22,31 +22,29 @@ except ImportError:
 
 h_helper.forward(1.5)
 
-with warnings.catch_warnings():
-    warnings.simplefilter('ignore')
-    import matplotlib
-    matplotlib.use('Agg')
-    from tkinter import *
-    from tkinter import filedialog
-    from tkinter import scrolledtext
-    from tkinter.ttk import *
-    import os
-    import queue
-    import shlex
-    import shutil
-    import subprocess
-    import threading
-    import traceback
+import matplotlib
+matplotlib.use('Agg')
+from tkinter import *
+from tkinter import filedialog
+from tkinter import scrolledtext
+from tkinter.ttk import *
+import os
+import queue
+import shlex
+import shutil
+import subprocess
+import threading
+import traceback
 
-    h_helper.forward(3.5)
-    import imageio
-    import torch
-    from skimage import img_as_ubyte, img_as_float
-    import skimage.transform as transform
-    import cv2
-    import numpy as np
-    import webbrowser
-    from demo import *
+h_helper.forward(3.5)
+import imageio
+import torch
+from skimage import img_as_ubyte, img_as_float
+import skimage.transform as transform
+import cv2
+import numpy as np
+import webbrowser
+from demo import *
 
 # written by dunnousername#8672
 
@@ -289,7 +287,7 @@ class Yanderify(Frame):
     def create_widgets(self):
         global st
         master = self.master
-        c = Checkbutton(master, text='I don\'t have NVIDIA >=GTX950', variable=use_cpu)
+        c = Checkbutton(master, text='I don\'t have NVIDIA >=GTX750', variable=use_cpu)
         c.grid(row=0, column=0)
         video_in = Button(master, text='Select Video', command=video_in_cb)
         video_in.grid(row=0, column=1)
