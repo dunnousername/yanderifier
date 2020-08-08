@@ -1,4 +1,42 @@
+Function Check-Hash($File, $ExpectedHash) {
+    $hash = Get-FileHash -Algorithm MD5 -Path "$File"
+    $hash.Hash -Eq $ExpectedHash
+}
+
+Function Safe-Download($Url, $Output, $ExpectedHash) {
+    if (Test-Path "$Output") {
+        echo ('Using existing ' + $Output)
+    } else {
+        echo ('Downloading ' + $Output)
+        Invoke-WebRequest "$Url" -OutFile "$Output"
+    }
+
+    if (Check-Hash -File "$Output" -ExpectedHash $ExpectedHash) {
+        return
+    } else {
+        echo ('Re-downloading ' + $Output)
+        Remove-Item "$Output"
+        Safe-Download -Url $Url -Output $Output -ExpectedHash $ExpectedHash
+    }
+}
+
+if ((Get-Item .).FullName -match ' ') {
+    echo 'Your path contains spaces. This will lead to issues.'
+    echo 'Examples of good paths: C:\Users\username\Desktop\yanderify; D:\myfiles\code'
+    echo 'Examples of bad paths: C:\Users\username\Desktop\my programs; D:\my downloads\yanderify'
+    pause
+    exit
+}
+
+if (Get-Command python -ErrorAction SilentlyContinue) {
+    echo 'WARNING: you have python already installed. sometimes this will lead to issues.'
+    echo 'see this page about a similar program: https://forum.faceswap.dev/app.php/faqpage#f1r1'
+    echo 'you can choose to continue installation or you can exit this window.'
+    pause
+}
+
 $arch = $env:PROCESSOR_ARCHITECTURE
+
 if (Test-Path '.\miniconda.exe') {
     echo 'Using existing install executable'
 } elseif ($arch -eq 'x86') {
@@ -20,11 +58,7 @@ if (Test-Path $installdir) {
     start -Wait -NoNewWindow -FilePath .\miniconda.exe -ArgumentList "/InstallationType=JustMe","/AddToPath=0","/RegisterPython=0","/S","/D=$installdir"
 }
 
-if (Test-Path '.\fomm.zip') {
-    echo 'Using existing fomm.zip'
-} else {
-    Invoke-WebRequest 'https://github.com/dunnousername/first-order-model/releases/download/v1.0.0/fomm.zip' -OutFile fomm.zip
-}
+Safe-Download -Url 'https://github.com/dunnousername/first-order-model/releases/download/v1.0.0/fomm.zip' -Output fomm.zip -ExpectedHash 'F50E5E39967ABAEB695B67F727E59892'
 
 if (Test-Path '.\fomm\') {
     echo 'Using existing first-order-motion-model install'
@@ -32,13 +66,9 @@ if (Test-Path '.\fomm\') {
     Expand-Archive -Path fomm.zip
 }
 
-if (Test-Path '.\yanderify\checkpoint.tar') {
-    echo 'not redownloading checkpoint'
-} else {
-    Invoke-WebRequest 'https://github.com/dunnousername/yanderifier/releases/download/model/checkpoint.tar' -OutFile .\yanderify\checkpoint.tar
-}
+Safe-Download -Url 'https://github.com/dunnousername/yanderifier/releases/download/model/checkpoint.tar' -Output .\yanderify\checkpoint.tar -ExpectedHash 'B667124DD6E324F42C3DF0B068B8C593'
 
 echo 'starting post-install script'
-cmd /k call ('"' + $installdir + '\Scripts\activate.bat' + '"') "&" powershell -ExecutionPolicy bypass -File install\windows\postinstall.ps1
-cmd /k call ('"' + $installdir + '\Scripts\activate.bat' + '"') "&" powershell -ExecutionPolicy bypass -File install\windows\postinstall2.ps1
-exit /b
+& .\install\windows\postinstall.bat "$installdir\condabin\conda.bat"
+pause
+exit
