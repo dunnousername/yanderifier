@@ -43,7 +43,7 @@ class HHelper:
         hour = datetime.datetime.now().hour
         enabled = enabled and ((hour >= 20) or (hour <= 7))
         self.enabled = enabled
-        self.cursor = 0
+        self.cursor = -1
         self.story = random.choice(stories)
     def username(self):
         return getpass.getuser()
