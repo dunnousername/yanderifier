@@ -3,6 +3,10 @@ print("Loading...")
 
 import hhelper
 import warnings
+import sys
+
+if 'debug' not in sys.argv:
+    warnings.simplefilter('ignore')
 
 h_helper = hhelper.HHelper()
 h_helper.forward(0.5)

@@ -15,7 +15,7 @@ call conda.bat activate yanderify
 
 @set PYTHONPATH=%PYTHONPATH%;%FOMM_LOCATION%
 
-python yanderify.py
+python yanderify.py debug
 
 @color
 
