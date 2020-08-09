@@ -10,7 +10,7 @@ cd yanderify
 
 call %MINICONDA_LOCATION%\Scripts\activate.bat
 
-call conda.bat activate yanderify
+call %MINICONDA_LOCATION%\condabin\conda.bat activate yanderify
 
 set PYTHONPATH=%PYTHONPATH%;%FOMM_LOCATION%
 
