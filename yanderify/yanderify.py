@@ -173,6 +173,7 @@ def make_animation_modified(source_image, driving_video, generator, kp_detector,
             out = generator(source, kp_source=kp_source, kp_driving=kp_norm)
             predictions.append(np.transpose(out['prediction'].data.cpu().numpy(), [0, 2, 3, 1])[0])
             del driving_frame
+            del out
             progress += 1
         progress = 0
     return predictions
@@ -303,7 +304,7 @@ class Yanderify(Frame):
         self.progress_bar.grid(row=1, column=0, columnspan=4)
         st = scrolledtext.ScrolledText(master, state=DISABLED)
         st.grid(row=2, column=0, columnspan=5, rowspan=7)
-        write('Started Yanderify 3.0.1-stable')
+        write('Started Yanderify 3.0.4-stable')
         #write('Warning: This is not a stable release and should not be treated as such.')
         write('Disclaimer: CPU mode on low-end computers or most laptops generally will cause the system to lock-up.')
         write('We are not liable if you freeze your PC by refusing to listen to this advice.')
