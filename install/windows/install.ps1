@@ -28,7 +28,7 @@ if ((Get-Item .).FullName -match ' ') {
     exit
 }
 
-if (Get-Command python -ErrorAction SilentlyContinue) {
+if (Get-Command pythonw -ErrorAction SilentlyContinue) {
     echo 'WARNING: you have python already installed. sometimes this will lead to issues.'
     echo 'see this page about a similar program: https://forum.faceswap.dev/app.php/faqpage#f1r1'
     echo 'you can choose to continue installation or you can exit this window.'
