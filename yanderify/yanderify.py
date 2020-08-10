@@ -148,22 +148,19 @@ def acceptable_resolution(x, y):
     return x, y
 
 # this function is from https://github.com/AliaksandrSiarohin/first-order-model/blob/master/demo.py and is slightly modified
-def make_animation_modified(source_image, driving_video, generator, kp_detector, relative=True, adapt_movement_scale=True, cpu=False):
+def make_animation_modified(source_image, driving_generator, generator, kp_detector, relative=True, adapt_movement_scale=True, cpu=False):
     with torch.no_grad():
-        predictions = []
         source = torch.tensor(source_image[np.newaxis].astype(np.float32)).permute(0, 3, 1, 2)
         if not cpu:
             source = source.cuda()
-        driving = torch.tensor(np.array(driving_video)[np.newaxis].astype(np.float32)).permute(0, 4, 1, 2, 3)
+        
+        first = next(driving_generator)
+        driving = torch.tensor(np.array(first)[np.newaxis][np.newaxis].astype(np.float32)).permute(0, 4, 1, 2, 3)
         kp_source = kp_detector(source)
         kp_driving_initial = kp_detector(driving[:, :, 0])
 
-        global progress_max
-        progress_max = driving.shape[2]
-        global progress
-        progress = 0
-        for frame_idx in range(driving.shape[2]):
-            driving_frame = driving[:, :, frame_idx]
+        def process(frame):
+            driving_frame = torch.tensor(np.array(frame)[np.newaxis][np.newaxis].astype(np.float32)).permute(0, 4, 1, 2, 3)[:, :, 0]
             if not cpu:
                 driving_frame = driving_frame.cuda()
             kp_driving = kp_detector(driving_frame)
@@ -171,12 +168,16 @@ def make_animation_modified(source_image, driving_video, generator, kp_detector,
                                    kp_driving_initial=kp_driving_initial, use_relative_movement=relative,
                                    use_relative_jacobian=relative, adapt_movement_scale=adapt_movement_scale)
             out = generator(source, kp_source=kp_source, kp_driving=kp_norm)
-            predictions.append(np.transpose(out['prediction'].data.cpu().numpy(), [0, 2, 3, 1])[0])
             del driving_frame
+            del kp_driving
+            del kp_norm
+            result = np.transpose(out['prediction'].data.cpu().numpy(), [0, 2, 3, 1])[0]
             del out
-            progress += 1
-        progress = 0
-    return predictions
+            return result
+
+        yield process(first)
+        for frame in driving_generator:
+            yield process(frame)
 
 def resize(img, shape):
     return transform.resize(img, shape, anti_aliasing=True)
@@ -186,6 +187,7 @@ def worker_thread(vid0n, img0n, vid1n, cpu):
         global progress
         global progress_max
         global stopped
+        global checkpoints
         with run_lock:
             if not (cpu == checkpoints['cpu']):
                 q.put('Reloading checkpoints...')
@@ -213,12 +215,13 @@ def worker_thread(vid0n, img0n, vid1n, cpu):
             size = img0.shape[:2][::-1]
             size = acceptable_resolution(size[0], size[1])
             img0 = resize(img0, (256, 256))[..., :3]
-            vid1 = []
+            vid1 = imageio.get_writer('tmp.mp4', fps=fps)
             q.put('Sources loaded')
-            for frame in make_animation_modified(img0, vid0, checkpoints['g'], checkpoints['kp'], cpu=cpu):
-                vid1.append(img_as_ubyte(resize(frame, size)))
+            for frame in make_animation_modified(img0, iter(vid0), checkpoints['g'], checkpoints['kp'], cpu=cpu):
+                vid1.append_data(img_as_ubyte(resize(frame, size)))
+                progress += 1
             print('Writing output to file...')
-            imageio.mimsave('tmp.mp4', vid1, fps=fps)
+            vid1.close()
             q.put('Muxing audio streams into output file...')
             cmd = shlex.split('ffmpeg -y -hide_banner -loglevel warning -i tmp.mp4 -i')
             cmd.append(vid0n)
@@ -304,7 +307,7 @@ class Yanderify(Frame):
         self.progress_bar.grid(row=1, column=0, columnspan=4)
         st = scrolledtext.ScrolledText(master, state=DISABLED)
         st.grid(row=2, column=0, columnspan=5, rowspan=7)
-        write('Started Yanderify 3.0.4-stable')
+        write('Started Yanderify 3.0.5-stable')
         #write('Warning: This is not a stable release and should not be treated as such.')
         write('Disclaimer: CPU mode on low-end computers or most laptops generally will cause the system to lock-up.')
         write('We are not liable if you freeze your PC by refusing to listen to this advice.')
