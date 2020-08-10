@@ -13,6 +13,7 @@
 
 @call %MINICONDA_LOCATION%\condabin\conda.bat activate yanderify
 
+@set PATH=%PATH%;%MINICONDA_LOCATION%\Library\bin
 @set PYTHONPATH=%PYTHONPATH%;%FOMM_LOCATION%
 
 python -v yanderify.py debug verbose

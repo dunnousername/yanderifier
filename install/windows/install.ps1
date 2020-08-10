@@ -70,5 +70,6 @@ Safe-Download -Url 'https://github.com/dunnousername/yanderifier/releases/downlo
 
 echo 'starting post-install script'
 & .\install\windows\postinstall.bat "$installdir\condabin\conda.bat"
+cp .\miniconda\pkgs\ffmpeg-*\Library\bin\* .\miniconda\Library\bin\
 pause
 exit

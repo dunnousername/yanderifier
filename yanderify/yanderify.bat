@@ -12,6 +12,7 @@ call %MINICONDA_LOCATION%\Scripts\activate.bat
 
 call %MINICONDA_LOCATION%\condabin\conda.bat activate yanderify
 
+set PATH=%PATH%;%MINICONDA_LOCATION%\Library\bin
 set PYTHONPATH=%PYTHONPATH%;%FOMM_LOCATION%
 
 start python yanderify.py
