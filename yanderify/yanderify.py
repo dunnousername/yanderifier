@@ -148,6 +148,7 @@ def acceptable_resolution(x, y):
     return x, y
 
 relative = BooleanVar()
+relative.set(True)
 
 # this function is from https://github.com/AliaksandrSiarohin/first-order-model/blob/master/demo.py and is slightly modified
 def make_animation_modified(source_image, driving_generator, generator, kp_detector, relative=True, adapt_movement_scale=True, cpu=False):
