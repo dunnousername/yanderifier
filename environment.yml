@@ -81,4 +81,5 @@ dependencies:
   - yaml=0.1.7=vc14h4cb57cf_1
   - zlib=1.2.11=vc14h1cdd9ab_1
   - zstd=1.4.4=ha9fde0e_3
-  - ffmpeg
+  - ffmpeg=4.0.2
+  - x264=='1!152.20180717'
