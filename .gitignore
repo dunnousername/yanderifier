@@ -1,0 +1,7 @@
+*/
+*.dll
+*.pyd
+base_library.zip
+Microsoft.VC90.CRT.manifest
+tmp.mp4
+checkpoint.tar
