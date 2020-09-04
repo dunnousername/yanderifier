@@ -1,4 +1,4 @@
-[Yanderify is not for making unethical, illicit or inappropriate content. Learn more here.](MANIFEST.md)
+[Yanderify is not for making unethical, illicit or inappropriate content. Learn more here.](MANIFESTO.md)
 
 # Yanderify
 Yanderify is a wrapper around [first-order-model](https://github.com/AliaksandrSiarohin/first-order-model). It exposes a simple user interface designed to be usable by anyone, with any level of technical skill. first-order-model was previously hard for the average person to use, since it required knowledge of the command line and installation of libraries. Yanderify eliminates these issues by providing a complete environment, with all necessary components bundled inside.
