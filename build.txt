@@ -1,0 +1,4 @@
+This project uses pyinstaller for building.
+When building, it is necessary to have a first-order-model install at fomm/, such that fomm/demo.py is a non-empty file from the fomm repo.
+Additionally, you'll need the checkpoint. See releases for more info.
+The build will be too large for github's release system, even when zipped. To overcome this, I've found and removed several duplicate .dll files associated with pytorch. This puts us just below the maximum file limit.

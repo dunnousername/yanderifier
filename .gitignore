@@ -1,0 +1,10 @@
+__pycache__/
+checkpoint.tar
+tmp.mp4
+ffmpeg.exe
+build/
+dist/
+dist.old/
+fomm/
+yanderify - Copy.spec
+hhelper.py
