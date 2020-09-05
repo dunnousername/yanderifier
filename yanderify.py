@@ -359,7 +359,5 @@ class Yanderify(Frame):
         except queue.Empty:
             self.after(50, self.process_queue)
 
-h_helper.finish()
-
 app = Yanderify(master=root)
 app.mainloop()
