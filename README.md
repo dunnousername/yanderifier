@@ -3,7 +3,7 @@
 # Yanderify
 Yanderify is a wrapper around [first-order-model](https://github.com/AliaksandrSiarohin/first-order-model). It exposes a simple user interface designed to be usable by anyone, with any level of technical skill. first-order-model was previously hard for the average person to use, since it required knowledge of the command line and installation of libraries. Yanderify eliminates these issues by providing a complete environment, with all necessary components bundled inside.
 
-Please see the "releases" tab for the latest build. The repo is not necessarily up to date.
+Please see the "releases" tab for the latest build. The repo is not necessarily up to date. However, [the latest-v4 branch](https://github.com/dunnousername/yanderifier/tree/latest-v4) contains the latest code as of this writing, while as of this writing, master contains code from 2 major versions back.
 
 ## What it does
 
