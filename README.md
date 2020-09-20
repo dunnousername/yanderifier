@@ -1,7 +1,13 @@
-[Yanderify is not for making unethical, illicit or inappropriate content. Learn more here.](MANIFESTO.md)
+[First-order-wrapper is not for making unethical, illicit or inappropriate content. Learn more here.](MANIFESTO.md)
 
-# Yanderify
-Yanderify is a wrapper around [first-order-model](https://github.com/AliaksandrSiarohin/first-order-model). It exposes a simple user interface designed to be usable by anyone, with any level of technical skill. first-order-model was previously hard for the average person to use, since it required knowledge of the command line and installation of libraries. Yanderify eliminates these issues by providing a complete environment, with all necessary components bundled inside.
+## Yanderify is now known as first-order-wrapper to more accurately describe its function.
+Since this project is no longer in active development, the name won't be changed everywhere.
+However, I'm starting to update documentation on all of my projects to make them better, so the name change felt neccessary.
+You can still refer to the project as Yanderify, and all of the links mentioning yanderify will continue to work. Changing the repo name would destroy any bookmarks or links to here, so that is not going to happen.
+The old documentation lies below.
+
+# first-order-wrapper
+first-order-wrapper is a wrapper around [first-order-model](https://github.com/AliaksandrSiarohin/first-order-model). It exposes a simple user interface designed to be usable by anyone, with any level of technical skill. first-order-model was previously hard for the average person to use, since it required knowledge of the command line and installation of libraries. Yanderify eliminates these issues by providing a complete environment, with all necessary components bundled inside.
 
 Please see the "releases" tab for the latest build. The repo is not necessarily up to date. However, [the latest-v4 branch](https://github.com/dunnousername/yanderifier/tree/latest-v4) contains the latest code as of this writing, while as of this writing, master contains code from 2 major versions back.
 
