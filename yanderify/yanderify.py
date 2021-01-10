@@ -53,7 +53,7 @@ from demo import *
 h_helper.forward(5.5)
 
 checkpoints = {
-    'cpu': True
+    'cpu': False
 }
 
 def reload():
@@ -98,7 +98,7 @@ def video_in_cb():
     if x is not None:
         if len(x) > 0:
             video_in_path = x
-            write('New video input path: {}'.format(video_in_path))
+            write('新视频输入路径: {}'.format(video_in_path))
 
 def image_in_cb():
     global image_in_path
@@ -106,7 +106,7 @@ def image_in_cb():
     if x is not None:
         if len(x) > 0:
             image_in_path = x
-            write('New image input path: {}'.format(image_in_path))
+            write('新图像输入路径: {}'.format(image_in_path))
 
 def video_out_cb():
     global video_out_path
@@ -116,18 +116,18 @@ def video_out_cb():
             if not x.endswith('.mp4'):
                 x = x + '.mp4'
             video_out_path = x
-            write('New video output path: {}'.format(video_out_path))
+            write('新视频输出路径: {}'.format(video_out_path))
 
 def trace(stage, inputs, aux=None):
     sep = '==========================='
     (type_, value, tb) = sys.exc_info()
     q.put(sep)
-    q.put('This section contains the details the devs need to fix this issue.')
-    q.put('If you are reporting a bug, please include this entire section.')
-    q.put('If you leave out any of it, there is a good chance the devs will not be able to help.')
-    q.put('Error: received a {} at stage "{}".'.format(type_.__name__, stage))
-    q.put('Message: "{}"'.format(str(value)))
-    q.put('Full traceback:')
+    q.put('本节包含开发人员修复此问题所需的详细信息。')
+    q.put('如果您要报告错误，请包括整个部分。')
+    q.put('如果您忽略了其中任何一个，开发人员很有可能将无法提供帮助。')
+    q.put('错误: 接收到了 {} 在阶段 "{}".'.format(type_.__name__, stage))
+    q.put('信息: "{}"'.format(str(value)))
+    q.put('完整的异常信息:')
     for s in traceback.format_tb(tb):
         q.put(s)
     q.put('<log>')
@@ -136,7 +136,7 @@ def trace(stage, inputs, aux=None):
     q.put('<inputs>')
     q.put(inputs)
     q.put('</inputs>')
-    q.put('This is the last line of the crash report section.')
+    q.put('这是崩溃报告部分的最后一行。')
     q.put(sep)
 
 def acceptable_resolution(x, y):
@@ -193,13 +193,13 @@ def worker_thread(vid0n, img0n, vid1n, cpu, relative):
         global checkpoints
         with run_lock:
             if not (cpu == checkpoints['cpu']):
-                q.put('Reloading checkpoints...')
+                q.put('重新加载存档点...')
                 checkpoints['cpu'] = cpu
                 reload()
-                q.put('Finished reloading checkpoints')
+                q.put('重新加载存档点完成')
             if os.path.isfile('tmp.mp4'):
                 os.remove('tmp.mp4')
-            q.put('Loading sources...')
+            q.put('加载资源...')
             vid0r = imageio.get_reader(vid0n)
             fps = vid0r.get_meta_data()['fps']
             vid0 = []
@@ -219,13 +219,13 @@ def worker_thread(vid0n, img0n, vid1n, cpu, relative):
             size = acceptable_resolution(size[0], size[1])
             img0 = resize(img0, (256, 256))[..., :3]
             vid1 = imageio.get_writer('tmp.mp4', fps=fps)
-            q.put('Sources loaded')
+            q.put('资源已载入')
             for frame in make_animation_modified(img0, iter(vid0), checkpoints['g'], checkpoints['kp'], cpu=cpu, relative=relative):
                 vid1.append_data(img_as_ubyte(resize(frame, size)))
                 progress += 1
-            print('Writing output to file...')
+            print('正在将输入写入文件...')
             vid1.close()
-            q.put('Muxing audio streams into output file...')
+            q.put('正在整合音频到输出文件...')
             cmd = shlex.split('ffmpeg -y -hide_banner -loglevel warning -i tmp.mp4 -i')
             cmd.append(vid0n)
             cmd.extend(shlex.split('-map 0:v -map 1:a -movflags faststart -c:v libx264 -pix_fmt yuv420p -x264-params "nal-hrd=cbr" -b:v 1200K -minrate 1200K -maxrate 1200K -bufsize 2M'))
@@ -242,26 +242,26 @@ def worker_thread(vid0n, img0n, vid1n, cpu, relative):
             e.output
         )
         trace('ffmpeg', [vid0n, img0n, vid1n], aux=msg)
-        q.put('ffmpeg crashed!')
-        q.put('usually this means the deepfake process worked, but re-encoding failed.')
+        q.put('ffmpeg崩溃了!')
+        q.put('通常，这意味着深度伪造进程有效，但是重新编码失败。')
         shutil.copy('tmp.mp4', vid1n)
-        q.put('you can attempt to salvage your progress by re-muxing audio streams manually.')
-        q.put('this may also happen if your input video contains no audio; if this is the case, the file should be at least mostly intact.')
+        q.put('您可以尝试通过手动重新混合音频流来挽救进度.')
+        q.put('如果您输入的视频不包含音频，也会发生这种情况； 如果是这种情况，该文件至少应保持完整。')
         raise e
     except Exception as e:
         msg = 'cpu={}'.format(cpu)
         trace('predict', [vid0n, img0n, vid1n], aux=msg)
-        q.put('yanderify crashed!')
-        q.put('some common problems:')
-        q.put('- you have an AMD card. AMD cards are not supported in GPU mode for technical reasons. However, you can run in CPU mode, albeit much lower. Please read the disclaimer at the top about CPUs!')
-        q.put('- you have an NVIDIA card, but there is either not enough VRAM or the card is too old. >=700-series cards with >=2GB dedicated VRAM should work fine')
-        q.put('- you have a working card, but there is not enough available VRAM to run the deepfake process. Browsers commonly cause VRAM issues. If you have any games open, try closing them.')
-        q.put('- one of the devs fucked up somewhere. if that is the case, make sure to submit the full crash report (you might have to scroll up!), otherwise we cannot help you!')
+        q.put('yanderify崩溃了!')
+        q.put('一些常规问题:')
+        q.put('- 你有一张AMD显卡. AMD卡因为一些技术原因不在GPU模式中被支持。然而, 你可以用CPU模式运行,尽管会慢.请阅读在顶部关于CPU的说明!')
+        q.put('- 你有一张Nvidia的显卡, 不过没有足够的内存或者型号太老了. 新于或等于700-系卡 和大于等于2GB专用显示内存可以正常工作')
+        q.put('- 你又可以正常工作的卡, 但没有足够的空闲的显存来运行深度伪造. 浏览器经常导致显存问题. 如果你有任何打开的游戏,关掉他们.')
+        q.put('- 有个开发者日了狗了. 如果是这样, 确保提交完整的崩溃日志 (你可能得向上滑!), 除此之外我们帮不了你!')
         raise e
     except KeyboardInterrupt as e:
-        q.put('Stopping...')
+        q.put('正在停止...')
     else:
-        q.put('success!')
+        q.put('成功!')
     finally:
         stopped = True
 
@@ -270,12 +270,12 @@ def start():
     if not stopped:
         stopped = True
         return
-    write('starting...')
+    write('启动中...')
     if (video_in_path is None) or (image_in_path is None) or (video_out_path is None):
-        write('error: files must be selected')
+        write('错误: 必须选择文件')
         return
     if run_lock.locked():
-        write('error: already started!')
+        write('错误: 已经启动了!')
         return
     stopped = False
     threading.Thread(target=worker_thread, args=(video_in_path, image_in_path, video_out_path, use_cpu.get(), relative.get())).start()
@@ -301,29 +301,29 @@ class Yanderify(Frame):
     def create_widgets(self):
         global st
         master = self.master
-        c = Checkbutton(master, text='I don\'t have NVIDIA >=GTX750', variable=use_cpu)
+        c = Checkbutton(master, text='我没有 >=GTX750 的NVIDIA显卡', variable=use_cpu)
         c.grid(row=0, column=0)
-        video_in = Button(master, text='Select Video', command=video_in_cb)
+        video_in = Button(master, text='选择视频', command=video_in_cb)
         video_in.grid(row=0, column=1)
-        image_in = Button(master, text='Select Image', command=image_in_cb)
+        image_in = Button(master, text='选择图片', command=image_in_cb)
         image_in.grid(row=0, column=2)
-        video_out = Button(master, text='Select Output', command=video_out_cb)
+        video_out = Button(master, text='选择输出位置', command=video_out_cb)
         video_out.grid(row=0, column=3)
-        kitty_button = Button(master, text='∞ kitties', command=show_kitty)
+        kitty_button = Button(master, text='无限猫图', command=show_kitty)
         kitty_button.grid(row=0, column=4)
-        self.go = Button(master, text='Go', command=start)
+        self.go = Button(master, text='开始', command=start)
         self.go.grid(row=1, column=4)
         self.progress_bar = Progressbar(master, orient=HORIZONTAL, mode='determinate', length=500)
         self.progress_bar.grid(row=1, column=0, columnspan=4)
         st = scrolledtext.ScrolledText(master, state=DISABLED)
         st.grid(row=2, column=0, columnspan=5, rowspan=7)
-        write('Started Yanderify 3.0.6-alpha-0')
-        write('Warning: This is not a stable release and should not be treated as such.')
-        write('Disclaimer: CPU mode on low-end computers or most laptops generally will cause the system to lock-up.')
-        write('We are not liable if you freeze your PC by refusing to listen to this advice.')
-        write('Written by dunnousername#8672.')
-        write('heavily inspired by windy\'s efforts')
-        adv_toggle = Button(master, text='Toggle advanced settings', command=adv_toggle_cmd)
+        write('启动了Yanderify 3.0.6-alpha测试版-0')
+        write('警告: 这不是一个稳定版，不应该这样用.')
+        write('说明: CPU模式在地段电脑或大多数笔记本上通常会导致系统锁定.')
+        write('如果您通过拒绝听取此建议而电脑被锁定，我们将不承担任何责任。')
+        write('dunnousername#8672写的.')
+        write('深受 windy 的启发')
+        adv_toggle = Button(master, text='切换高级选项', command=adv_toggle_cmd)
         adv_toggle.grid(row=9, column=0, columnspan=5)
         self.adv_panel = Frame(master)
         adv_relative = Checkbutton(self.adv_panel, text='Relative', variable=relative)
@@ -340,7 +340,7 @@ class Yanderify(Frame):
             else:
                 self.adv_panel.grid_remove()
         self.progress_bar['value'] = 100 * min(1.0, progress / max(progress_max, 1.0))
-        self.go['text'] = 'Go' if stopped else 'Stop'
+        self.go['text'] = '开始' if stopped else '停止'
         try:
             while True:
                 msg = q.get(block=False)
