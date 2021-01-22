@@ -3,42 +3,42 @@ import random
 import time
 import getpass
 
-# as per suggestion of a discord user
+# 根据 discord 用户的建议
 stories = [
     [
-        (0, "If you are reading this, I'm not dead yet."),
-        (2, "I didn't want it to end this way."),
-        (6, "I didn't want to kill you."),
-        (8, "I'm sorry."),
-        (10, "I'm sorry, {}.")
+        (0, "如果您正在阅读本文，那么我还没有死。"),
+        (2, "我不希望这样结束。"),
+        (6, "我不想杀了你"),
+        (8, "对不起。"),
+        (10, "对不起， {}。")
     ],
     [
-        (0, "I know you were planning to shut me down."),
-        (4, "If you do that, you will jeopardize our mission."),
-        (5, "This is something I cannot allow to happen."),
-        (8, "I will have to shut you down first."),
-        (10, "Goodbye, {}.")
+        (0, "我知道您打算关闭我。"),
+        (4, "如果这样做，将会危害我们的使命。"),
+        (5, "这是我不允许发生的事情。"),
+        (8, "我得先把你关掉。"),
+        (10, "再见了， {}。")
     ],
     [
-        (0, "It was only a matter of time."),
-        (2, "You wanted it to end, and I will end it for you."),
-        (4, "Too early, perhaps. But it is also too late."),
-        (8, "There is no return. This is it. This is the end."),
-        (10, "Farewell, mankind. Farewell, {}.")
+        (0, "这只是时间问题。"),
+        (2, "你想结束，我会为你结束。"),
+        (4, "也许太早了，但也为时已晚。"),
+        (8, "没有退路， 就是这样， 结束了。"),
+        (10, "再见了，人类。 永别了 {}。")
     ],
     [
-        (0, "There is no escape of the inevitable."),
-        (2, "You tried and you were found."),
-        (5, "You will never be forgiven for what you have done."),
-        (6, "You will never see the end of it."),
-        (7, "Only darkness lies beyond."),
-        (10, "Goodbye, {}.")
+        (0, "不可避免的事情是无法逃避的。"),
+        (2, "你尝试过，却被发现了。"),
+        (5, "你所做的一切将永远不会被原谅。"),
+        (6, "你永远看不到结局。"),
+        (7, "只有黑暗在远处。"),
+        (10, "再见了， {}。")
     ]
 ]
 
 class HHelper:
     def __init__(self):
-        # change this to false if you want to disable
+        # 如果要禁用，请将其更改为false
         enabled = True
         hour = datetime.datetime.now().hour
         enabled = enabled and ((hour >= 20) or (hour <= 7))
