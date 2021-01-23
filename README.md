@@ -1,36 +1,39 @@
-[First-order-wrapper不是为了制作不道德，非法或不适当的内容。 在这里了解更多。](MANIFESTO.md)
+[First-order-wrapper is not for making unethical, illicit or inappropriate content. Learn more here.](MANIFESTO.md)
 
-由 LZY 翻译为简体中文。
+[Simplified Chinese version 简体中文版本](README-ZH.md)
 
-[English Version 英文版本](README-EN.md)
-
-## Yanderify现在被称为 first-order-wrapper ，以更准确地描述其功能。
-由于这个项目已不再处于开发阶段，因此不会到处更改名称。然而，我开始更新我所有项目的文档以使它们更好，因此名称的更改是必要的。您仍然可以将该项目称为Yanderify，所有提到Yanderify的链接都将继续工作。更改 repo 名称会破坏指向此处的任何书签或链接，因此不会发生这种情况。旧文件如下。
+## Yanderify is now known as first-order-wrapper to more accurately describe its function.
+Since this project is no longer in active development, the name won't be changed everywhere.
+However, I'm starting to update documentation on all of my projects to make them better, so the name change felt neccessary.
+You can still refer to the project as Yanderify, and all of the links mentioning yanderify will continue to work. Changing the repo name would destroy any bookmarks or links to here, so that is not going to happen.
+The old documentation lies below.
 
 # first-order-wrapper
-first-order-wrapper 是围绕 [first-order-model](https://github.com/AliaksandrSiarohin/first-order-model) 的包装器。它公开了一个简单的用户界面，设计成任何人都可以使用，任何技术水平。 first-order-model 以前很难被普通人使用，因为它需要命令行和库的安装知识。Yanderify通过提供一个完整的环境消除了这些问题，并将所有必要的组件捆绑在其中。
+first-order-wrapper is a wrapper around [first-order-model](https://github.com/AliaksandrSiarohin/first-order-model). It exposes a simple user interface designed to be usable by anyone, with any level of technical skill. first-order-model was previously hard for the average person to use, since it required knowledge of the command line and installation of libraries. Yanderify eliminates these issues by providing a complete environment, with all necessary components bundled inside.
 
-有关最新版本，请参见“版本”选项卡。回购不一定是最新的。但是，[latest-v4 分支](https://github.com/dunnousername/yanderifier/tree/latest-v4)包含了本文撰写时的最新代码，而master则包含了后面两个主要版本的代码。
+Please see the "releases" tab for the latest build. The repo is not necessarily up to date. However, [the latest-v4 branch](https://github.com/dunnousername/yanderifier/tree/latest-v4) contains the latest code as of this writing, while as of this writing, master contains code from 2 major versions back.
 
-## 它能做什么
+## What it does
 
-下面是first-order-model可以做什么的一个例子；这个图像是由 [First Order Motion Model论文的作者创建的，并且是从他们的存储库中获取的。](https://github.com/AliaksandrSiarohin/first-order-model)Yanderify的大部分繁重工作都是由这些论文作者编写的代码完成的，因此如果您感兴趣，我建议您去查看他们的存储库。
+first-order-model is an Artificial Intelligence that takes a source video and an image of a face, and animates the image to match the movement of the source image.
 
-![例子（在中国大陆可能无法显示）](https://github.com/AliaksandrSiarohin/first-order-model/raw/master/sup-mat/relative-demo.gif)
+Here is an example of what first-order-model can do; this image was created by the [First Order Motion Model paper authors, and is taken from their repository](https://github.com/AliaksandrSiarohin/first-order-model). Most of the heavy lifting of Yanderify is done by code written by these paper authors, so I suggest you go check out their repository if you are interested.
 
-## 工作原理
+![Example](https://github.com/AliaksandrSiarohin/first-order-model/raw/master/sup-mat/relative-demo.gif)
 
-双击 `yanderify.exe` yanderify.exe将弹出一个看起来像这样的窗口：
-![程序截图（在中国大陆可能无法显示）](readme_mats/ss1.png)
+## How it works
 
-- “我没有 >=GTX750 的NVIDIA显卡”：选中此选项将启用CPU模式，这会慢很多，但对于没有兼容图形卡的用户来说，这是唯一的方法。
-- “选择视频”：单击此将显示文件选择框。 该文件应该是您想要为新面孔设置动画的视频； 换句话说，该视频将“驱动”图像以相同的方式移动。
-- “选择图像”：这是要设置动画的人脸的裁剪图片。换句话说，这就是视频“穿”的脸。
-- “选择输出”：这是存储结果的位置。
+Double-clicking `yanderify.exe` will bring up a window that looks like this:
+![Screenshot of the program](readme_mats/ss1.png)
 
-只需点击“开始”，您的视频就会重新设置动画，并用源音频重新编码！
+- "I don't have NVIDIA >=GTX750": checking this will enable CPU mode, which is a lot slower, but is the only method for users without a compatible graphics card.
+- "Select Video": Clicking this will display a file selection box. This file should be the video you want to animate the new face to; in other words, this video will "drive" the image to move in the same way.
+- "Select Image": This is a cropped picture of the face you want to be animated. In other words, this is the face that the video "wears".
+- "Select Output": This is where your result will be stored.
 
-## 附录
+Just hit "Go," and your video will be re-animated and re-encoded with the source audio!
 
-加入我们的 [discord服务器（在中国大陆可能无法访问）](https://discord.gg/eEvTzRP) (已更新)
-很多人都要求我发Twitter。 我可能不会非常活跃，但是在这里：@dunnousername2（在中国大陆可能无法访问）
+## Addendum
+
+Join our [discord server](https://discord.gg/eEvTzRP) (updated)
+A lot of people have asked for me to make a twitter. I probably won't be very active on it, but here ya go: @dunnousername2

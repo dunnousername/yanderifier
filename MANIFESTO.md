@@ -1,17 +1,17 @@
-# 宣言
-鉴于最近发生的事件，我想概述一下该存储库的用途和目的。
-最好的表达方式可能是 [Deepfakes/faceswap宣言（英文）](https://github.com/deepfakes/faceswap#manifesto) ，为了相关性和明确性而进行了编辑：
-> 当Faceswapping（换脸）最初被开发和发布时，该技术是开创性的，这是AI开发的一大步。 在学术界之外，它也被完全忽略了，因为该代码令人困惑且零碎。 它需要对复杂的AI技术有透彻的了解，并花了很多精力才能弄清楚。 直到一个人将其汇集成一个单一的，有凝聚力的集合。 它运行，运行，而且是如此频繁的方式与新技术出现在互联网上，它立即被用于创建不合适的内容。 尽管最开始就有人用于不适当的目的，这还是第一个任何人都可以下载、运行和通过实验学习的人工智能代码，而无需拥有数学、计算机理论、心理学等方面的博士学位。 在“深造”之前，这些技术就像是黑魔法，只有那些了解深奥且无穷无尽的书籍和论文中所描述的所有内部工作原理的人才能实践。
+# Manifesto
+In light of recent events, I'd like to outline what this repository is for and what it isn't for.
+The best way of putting it is probably as [deepfakes/faceswap's manifesto](https://github.com/deepfakes/faceswap#manifesto), edited for the sake of relevance and clarity:
+> When faceswapping was first developed and published, the technology was groundbreaking, it was a huge step in AI development. It was also completely ignored outside of academia because the code was confusing and fragmentary. It required a thorough understanding of complicated AI techniques and took a lot of effort to figure it out. Until one individual brought it together into a single, cohesive collection. It ran, it worked, and as is so often the way with new technology emerging on the internet, it was immediately used to create inappropriate content. Despite the inappropriate uses the software was given originally, it was the first AI code that anyone could download, run and learn by experimentation without having a Ph.D. in math, computer theory, psychology, and more. Before "deepfakes" these techniques were like black magic, only practiced by those who could understand all of the inner workings as described in esoteric and endlessly complicated books and papers.
 >
-> “ Deepfakes”改变了这一切，任何人都可以参与AI开发。 对于我们开发人员而言，此代码的发布带来了绝佳的学习机会。 它使我们能够借鉴其他人提出的想法，与各种熟练写代码的人员合作，在学习新技能的同时尝试AI，并最终为新兴技术做出贡献，随着技术的进步，它只会在更多的主流场合得到使用。
+> "Deepfakes" changed all that and anyone could participate in AI development. To us, developers, the release of this code opened up a fantastic learning opportunity. It allowed us to build on ideas developed by others, collaborate with a variety of skilled coders, experiment with AI whilst learning new skills and ultimately contribute towards an emerging technology which will only see more mainstream use as it progresses.
 >
-> 但是，对我们来说很明显，这可能不是别人使用它的方式。 有人在用我们的软件做可怕的事情吗？ 也许。 因此，开发人员和其他贡献者一直遵循严格的道德标准。 我们许多人甚至不使用它来创建视频，我们只是修改代码，看看它能做什么。 不幸的是，可能有人用Yanderify的代码做了可怕的事情，但是它们并不能代表创建它的原因，我们现在的使用方式或我们对代码的未来的看法。像任何技术一样，它可以被用来做好事，也可以被滥用。 我们的目的是开发Yanderify，以最大程度地减少其滥用的可能性，同时最大程度地发挥其作为学习，实验以及正当的换脸和道德娱乐的工具的潜力。
+> However, it became apparent to us that this may not be how others use it. Are there some people out there doing horrible things with our software? Maybe. And because of this, the developers and other contributors have been following strict ethical standards. Many of us don't even use it to create videos, we just tinker with the code to see what it does. Unfortunately, there might be people that do awful things with Yanderify's code, but they are not representative of why it was created, how we use it now, or what we see in its future. Like any technology, it can be used for good or it can be abused. It is our intention to develop Yanderify in a way that its potential for abuse is minimized whilst maximizing its potential as a tool for learning, experimenting and, yes, for legitimate faceswapping and ethical entertainment.
 >
-> 帮助Yanderify开发的人不会容忍对我们软件的不当使用。我们是程序员，我们是工程师，我们是业余爱好者，但最重要的是我们是人。Yanderify始终旨在娱乐和教育。为此，我们认为是时候就该软件的含义和对我们开发人员而言 不甚明确 的问题发表标准声明了。
+> The people that have assisted in Yanderify's development do not condone inapproriate uses of our software. We are programmers, we are engineers, we are hobbyists, but most importantly we are human beings. Yanderify was always intended for entertaining and educating. To this end, we feel that it's time to come out with a standard statement of what this software is and isn't as far as us developers are concerned.
 >
->    - Yanderify 不是为了创造不适当的内容。
->    - Yanderify 禁止未经同意或出于隐瞒使用目的而更改面孔。
->    - Yanderify 不是为了任何非法，不道德或可疑目的。
->    - Yanderify 的存在是为了试验和发现AI技术，进行社会或政治评论（请不要在中国大陆这么做），电影以及各种道德和合理用途的实验。
+>    - Yanderify is not for creating inappropriate content.
+>    - Yanderify is not for changing faces without consent or with the intent of hiding its use.
+>    - Yanderify is not for any illicit, unethical, or questionable purposes.
+>    - Yanderify exists to experiment and discover AI techniques, for social or political commentary, for movies, and for any number of ethical and reasonable uses.
 >
-> 我们非常不安的事实是， Yandrify 可以用于不道德和不名誉的事情。然而，我们支持开发可合乎道德使用的工具和技术，并为任何想亲自学习人工智能的人提供人工智能方面的教育和经验。对于出于任何不道德目的而使用此软件的任何人，我们将采取零容忍的态度，并将积极劝阻任何此类使用。
+> We are very troubled by the fact that Yanderify can be used for unethical and disreputable things. However, we support the development of tools and techniques that can be used ethically as well as provide education and experience in AI for anyone who wants to learn it hands-on. We will take a zero tolerance approach to anyone using this software for any unethical purposes and will actively discourage any such uses.
