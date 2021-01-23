@@ -1,5 +1,5 @@
 # coding: utf-8
-print("Loading...")
+print("加载中……")
 
 import hhelper
 import warnings
