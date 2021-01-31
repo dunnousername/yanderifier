@@ -35,5 +35,5 @@ Just hit "Go," and your video will be re-animated and re-encoded with the source
 
 ## Addendum
 
-Join our [discord server](https://discord.gg/7CakRQ5Zv9) (updated)
+Join our [discord server](https://discord.gg/KmFJNJYaA3) (updated again)
 A lot of people have asked for me to make a twitter. I probably won't be very active on it, but here ya go: @dunnousername2
