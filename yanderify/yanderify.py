@@ -1,9 +1,20 @@
 # coding: utf-8
-print("加载中……")
 
 import hhelper
 import warnings
 import sys
+
+import locale
+sys_language = locale.getdefaultlocale()
+if "zh" in sys_language[0]:
+    sys_language = "chinese"
+else:
+    sys_language = "english"
+import json
+with open("languages.json", "r", encoding="utf-8") as f:
+    languages = json.load(f)
+
+print(languages["loading"][sys_language])
 
 if 'debug' not in sys.argv:
     warnings.simplefilter('ignore')
@@ -98,7 +109,7 @@ def video_in_cb():
     if x is not None:
         if len(x) > 0:
             video_in_path = x
-            write('新视频输入路径: {}'.format(video_in_path))
+            write(languages["new_video_input_path"][sys_language].format(video_in_path))
 
 def image_in_cb():
     global image_in_path
@@ -106,7 +117,7 @@ def image_in_cb():
     if x is not None:
         if len(x) > 0:
             image_in_path = x
-            write('新图像输入路径: {}'.format(image_in_path))
+            write(languages["new_image_input_path"][sys_language].format(image_in_path))
 
 def video_out_cb():
     global video_out_path
@@ -122,12 +133,12 @@ def trace(stage, inputs, aux=None):
     sep = '==========================='
     (type_, value, tb) = sys.exc_info()
     q.put(sep)
-    q.put('本节包含开发人员修复此问题所需的详细信息。')
-    q.put('如果您要报告错误，请包括整个部分。')
-    q.put('如果您忽略了其中任何一个，开发人员很有可能将无法提供帮助。')
-    q.put('错误: 接收到了 {} 在阶段 "{}".'.format(type_.__name__, stage))
-    q.put('信息: "{}"'.format(str(value)))
-    q.put('完整的异常信息:')
+    q.put(languages["err_msg_1"][sys_language])
+    q.put(languages["err_msg_2"][sys_language])
+    q.put(languages["err_msg_3"][sys_language])
+    q.put(languages["err_msg_4"][sys_language].format(type_.__name__, stage))
+    q.put(languages["err_msg_5"][sys_language].format(str(value)))
+    q.put(languages["err_msg_6"][sys_language])
     for s in traceback.format_tb(tb):
         q.put(s)
     q.put('<log>')
@@ -136,7 +147,7 @@ def trace(stage, inputs, aux=None):
     q.put('<inputs>')
     q.put(inputs)
     q.put('</inputs>')
-    q.put('这是崩溃报告部分的最后一行。')
+    q.put(languages["err_msg_7"][sys_language])
     q.put(sep)
 
 def acceptable_resolution(x, y):
@@ -193,13 +204,13 @@ def worker_thread(vid0n, img0n, vid1n, cpu, relative):
         global checkpoints
         with run_lock:
             if not (cpu == checkpoints['cpu']):
-                q.put('重新加载存档点...')
+                q.put(languages["reloading_checkpoints"][sys_language])
                 checkpoints['cpu'] = cpu
                 reload()
-                q.put('重新加载存档点完成')
+                q.put(languages["finished_loading_checkpoints"][sys_language])
             if os.path.isfile('tmp.mp4'):
                 os.remove('tmp.mp4')
-            q.put('加载资源...')
+            q.put(languages["loading_sources"][sys_language])
             vid0r = imageio.get_reader(vid0n)
             fps = vid0r.get_meta_data()['fps']
             vid0 = []
@@ -219,13 +230,13 @@ def worker_thread(vid0n, img0n, vid1n, cpu, relative):
             size = acceptable_resolution(size[0], size[1])
             img0 = resize(img0, (256, 256))[..., :3]
             vid1 = imageio.get_writer('tmp.mp4', fps=fps)
-            q.put('资源已载入')
+            q.put(languages["sources_loaded"][sys_language])
             for frame in make_animation_modified(img0, iter(vid0), checkpoints['g'], checkpoints['kp'], cpu=cpu, relative=relative):
                 vid1.append_data(img_as_ubyte(resize(frame, size)))
                 progress += 1
-            print('正在将输入写入文件...')
+            print(languages["writing_output_to_file"][sys_language])
             vid1.close()
-            q.put('正在整合音频到输出文件...')
+            q.put(languages["muxing_audio_streams_into_output_file"][sys_language])
             cmd = shlex.split('ffmpeg -y -hide_banner -loglevel warning -i tmp.mp4 -i')
             cmd.append(vid0n)
             cmd.extend(shlex.split('-map 0:v -map 1:a -movflags faststart -c:v libx264 -pix_fmt yuv420p -x264-params "nal-hrd=cbr" -b:v 1200K -minrate 1200K -maxrate 1200K -bufsize 2M'))
@@ -242,26 +253,26 @@ def worker_thread(vid0n, img0n, vid1n, cpu, relative):
             e.output
         )
         trace('ffmpeg', [vid0n, img0n, vid1n], aux=msg)
-        q.put('ffmpeg崩溃了!')
-        q.put('通常，这意味着深度伪造进程有效，但是重新编码失败。')
+        q.put(languages["suberr1"][sys_language])
+        q.put(languages["suberr2"][sys_language])
         shutil.copy('tmp.mp4', vid1n)
-        q.put('您可以尝试通过手动重新混合音频流来挽救进度.')
-        q.put('如果您输入的视频不包含音频，也会发生这种情况； 如果是这种情况，该文件至少应保持完整。')
+        q.put(languages["suberr3"][sys_language])
+        q.put(languages["suberr4"][sys_language])
         raise e
     except Exception as e:
         msg = 'cpu={}'.format(cpu)
         trace('predict', [vid0n, img0n, vid1n], aux=msg)
-        q.put('yanderify崩溃了!')
-        q.put('一些常规问题:')
-        q.put('- 你有一张AMD显卡. AMD卡因为一些技术原因不在GPU模式中被支持。然而, 你可以用CPU模式运行,尽管会慢.请阅读在顶部关于CPU的说明!')
-        q.put('- 你有一张Nvidia的显卡, 不过没有足够的内存或者型号太老了. 新于或等于700-系卡 和大于等于2GB专用显示内存可以正常工作')
-        q.put('- 你又可以正常工作的卡, 但没有足够的空闲的显存来运行深度伪造. 浏览器经常导致显存问题. 如果你有任何打开的游戏,关掉他们.')
-        q.put('- 有个开发者日了狗了. 如果是这样, 确保提交完整的崩溃日志 (你可能得向上滑!), 除此之外我们帮不了你!')
+        q.put(languages["othererr1"][sys_language])
+        q.put(languages["othererr2"][sys_language])
+        q.put(languages["othererr3"][sys_language])
+        q.put(languages["othererr4"][sys_language])
+        q.put(languages["othererr5"][sys_language])
+        q.put(languages["othererr6"][sys_language])
         raise e
     except KeyboardInterrupt as e:
-        q.put('正在停止...')
+        q.put(languages["keyboardinterrupt"][sys_language])
     else:
-        q.put('成功!')
+        q.put(languages["success"][sys_language])
     finally:
         stopped = True
 
@@ -270,12 +281,12 @@ def start():
     if not stopped:
         stopped = True
         return
-    write('启动中...')
+    write(languages["start1"][sys_language])
     if (video_in_path is None) or (image_in_path is None) or (video_out_path is None):
-        write('错误: 必须选择文件')
+        write(languages["start2"][sys_language])
         return
     if run_lock.locked():
-        write('错误: 已经启动了!')
+        write(languages["start3"][sys_language])
         return
     stopped = False
     threading.Thread(target=worker_thread, args=(video_in_path, image_in_path, video_out_path, use_cpu.get(), relative.get())).start()
@@ -301,29 +312,29 @@ class Yanderify(Frame):
     def create_widgets(self):
         global st
         master = self.master
-        c = Checkbutton(master, text='我没有 >=GTX750 的NVIDIA显卡', variable=use_cpu)
+        c = Checkbutton(master, text=languages["class1"][sys_language], variable=use_cpu)
         c.grid(row=0, column=0)
-        video_in = Button(master, text='选择视频', command=video_in_cb)
+        video_in = Button(master, text=languages["class2"][sys_language], command=video_in_cb)
         video_in.grid(row=0, column=1)
-        image_in = Button(master, text='选择图片', command=image_in_cb)
+        image_in = Button(master, text=languages["class3"][sys_language], command=image_in_cb)
         image_in.grid(row=0, column=2)
-        video_out = Button(master, text='选择输出位置', command=video_out_cb)
+        video_out = Button(master, text=languages["class4"][sys_language], command=video_out_cb)
         video_out.grid(row=0, column=3)
-        kitty_button = Button(master, text='无限猫图', command=show_kitty)
+        kitty_button = Button(master, text=languages["class5"][sys_language], command=show_kitty)
         kitty_button.grid(row=0, column=4)
-        self.go = Button(master, text='开始', command=start)
+        self.go = Button(master, text=languages["class6"][sys_language], command=start)
         self.go.grid(row=1, column=4)
         self.progress_bar = Progressbar(master, orient=HORIZONTAL, mode='determinate', length=500)
         self.progress_bar.grid(row=1, column=0, columnspan=4)
         st = scrolledtext.ScrolledText(master, state=DISABLED)
         st.grid(row=2, column=0, columnspan=5, rowspan=7)
-        write('启动了Yanderify 3.0.6-alpha测试版-0')
-        write('警告: 这不是一个稳定版，不应该这样用.')
-        write('说明: CPU模式在地段电脑或大多数笔记本上通常会导致系统锁定.')
-        write('如果您通过拒绝听取此建议而电脑被锁定，我们将不承担任何责任。')
-        write('dunnousername#8672写的.')
-        write('深受 windy 的启发')
-        adv_toggle = Button(master, text='切换高级选项', command=adv_toggle_cmd)
+        write(languages["class7"][sys_language])
+        write(languages["class8"][sys_language])
+        write(languages["class9"][sys_language])
+        write(languages["class10"][sys_language])
+        write(languages["class11"][sys_language])
+        write(languages["class12"][sys_language])
+        adv_toggle = Button(master, text=languages["class13"][sys_language], command=adv_toggle_cmd)
         adv_toggle.grid(row=9, column=0, columnspan=5)
         self.adv_panel = Frame(master)
         adv_relative = Checkbutton(self.adv_panel, text='Relative', variable=relative)
@@ -340,7 +351,7 @@ class Yanderify(Frame):
             else:
                 self.adv_panel.grid_remove()
         self.progress_bar['value'] = 100 * min(1.0, progress / max(progress_max, 1.0))
-        self.go['text'] = '开始' if stopped else '停止'
+        self.go['text'] = languages["class14"][sys_language] if stopped else languages["class15"][sys_language]
         try:
             while True:
                 msg = q.get(block=False)
