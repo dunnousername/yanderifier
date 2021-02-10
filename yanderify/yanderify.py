@@ -1,5 +1,14 @@
 # coding: utf-8
-print("Loading...")
+
+import locale
+import json
+
+sys_language = locale.getdefaultlocale()
+sys_language = sys_language[0]
+with open(".\\Languages\\"+sys_language+".json", "r", encoding="utf-8") as f:
+    languages = json.load(f)
+
+print(languages["loading"])
 
 import hhelper
 import warnings
@@ -53,7 +62,7 @@ from demo import *
 h_helper.forward(5.5)
 
 checkpoints = {
-    'cpu': True
+    'cpu': False
 }
 
 def reload():
@@ -98,7 +107,7 @@ def video_in_cb():
     if x is not None:
         if len(x) > 0:
             video_in_path = x
-            write('New video input path: {}'.format(video_in_path))
+            write(languages["new_video_input_path"].format(video_in_path))
 
 def image_in_cb():
     global image_in_path
@@ -106,7 +115,7 @@ def image_in_cb():
     if x is not None:
         if len(x) > 0:
             image_in_path = x
-            write('New image input path: {}'.format(image_in_path))
+            write(languages["new_image_input_path"].format(image_in_path))
 
 def video_out_cb():
     global video_out_path
@@ -116,18 +125,18 @@ def video_out_cb():
             if not x.endswith('.mp4'):
                 x = x + '.mp4'
             video_out_path = x
-            write('New video output path: {}'.format(video_out_path))
+            write('新视频输出路径: {}'.format(video_out_path))
 
 def trace(stage, inputs, aux=None):
     sep = '==========================='
     (type_, value, tb) = sys.exc_info()
     q.put(sep)
-    q.put('This section contains the details the devs need to fix this issue.')
-    q.put('If you are reporting a bug, please include this entire section.')
-    q.put('If you leave out any of it, there is a good chance the devs will not be able to help.')
-    q.put('Error: received a {} at stage "{}".'.format(type_.__name__, stage))
-    q.put('Message: "{}"'.format(str(value)))
-    q.put('Full traceback:')
+    q.put(languages["err_msg_1"])
+    q.put(languages["err_msg_2"])
+    q.put(languages["err_msg_3"])
+    q.put(languages["err_msg_4"].format(type_.__name__, stage))
+    q.put(languages["err_msg_5"].format(str(value)))
+    q.put(languages["err_msg_6"])
     for s in traceback.format_tb(tb):
         q.put(s)
     q.put('<log>')
@@ -136,7 +145,7 @@ def trace(stage, inputs, aux=None):
     q.put('<inputs>')
     q.put(inputs)
     q.put('</inputs>')
-    q.put('This is the last line of the crash report section.')
+    q.put(languages["err_msg_7"])
     q.put(sep)
 
 def acceptable_resolution(x, y):
@@ -193,13 +202,13 @@ def worker_thread(vid0n, img0n, vid1n, cpu, relative):
         global checkpoints
         with run_lock:
             if not (cpu == checkpoints['cpu']):
-                q.put('Reloading checkpoints...')
+                q.put(languages["reloading_checkpoints"])
                 checkpoints['cpu'] = cpu
                 reload()
-                q.put('Finished reloading checkpoints')
+                q.put(languages["finished_loading_checkpoints"])
             if os.path.isfile('tmp.mp4'):
                 os.remove('tmp.mp4')
-            q.put('Loading sources...')
+            q.put(languages["loading_sources"])
             vid0r = imageio.get_reader(vid0n)
             fps = vid0r.get_meta_data()['fps']
             vid0 = []
@@ -219,13 +228,13 @@ def worker_thread(vid0n, img0n, vid1n, cpu, relative):
             size = acceptable_resolution(size[0], size[1])
             img0 = resize(img0, (256, 256))[..., :3]
             vid1 = imageio.get_writer('tmp.mp4', fps=fps)
-            q.put('Sources loaded')
+            q.put(languages["sources_loaded"])
             for frame in make_animation_modified(img0, iter(vid0), checkpoints['g'], checkpoints['kp'], cpu=cpu, relative=relative):
                 vid1.append_data(img_as_ubyte(resize(frame, size)))
                 progress += 1
-            print('Writing output to file...')
+            print(languages["writing_output_to_file"])
             vid1.close()
-            q.put('Muxing audio streams into output file...')
+            q.put(languages["muxing_audio_streams_into_output_file"])
             cmd = shlex.split('ffmpeg -y -hide_banner -loglevel warning -i tmp.mp4 -i')
             cmd.append(vid0n)
             cmd.extend(shlex.split('-map 0:v -map 1:a -movflags faststart -c:v libx264 -pix_fmt yuv420p -x264-params "nal-hrd=cbr" -b:v 1200K -minrate 1200K -maxrate 1200K -bufsize 2M'))
@@ -242,26 +251,26 @@ def worker_thread(vid0n, img0n, vid1n, cpu, relative):
             e.output
         )
         trace('ffmpeg', [vid0n, img0n, vid1n], aux=msg)
-        q.put('ffmpeg crashed!')
-        q.put('usually this means the deepfake process worked, but re-encoding failed.')
+        q.put(languages["suberr1"])
+        q.put(languages["suberr2"])
         shutil.copy('tmp.mp4', vid1n)
-        q.put('you can attempt to salvage your progress by re-muxing audio streams manually.')
-        q.put('this may also happen if your input video contains no audio; if this is the case, the file should be at least mostly intact.')
+        q.put(languages["suberr3"])
+        q.put(languages["suberr4"])
         raise e
     except Exception as e:
         msg = 'cpu={}'.format(cpu)
         trace('predict', [vid0n, img0n, vid1n], aux=msg)
-        q.put('yanderify crashed!')
-        q.put('some common problems:')
-        q.put('- you have an AMD card. AMD cards are not supported in GPU mode for technical reasons. However, you can run in CPU mode, albeit much lower. Please read the disclaimer at the top about CPUs!')
-        q.put('- you have an NVIDIA card, but there is either not enough VRAM or the card is too old. >=700-series cards with >=2GB dedicated VRAM should work fine')
-        q.put('- you have a working card, but there is not enough available VRAM to run the deepfake process. Browsers commonly cause VRAM issues. If you have any games open, try closing them.')
-        q.put('- one of the devs fucked up somewhere. if that is the case, make sure to submit the full crash report (you might have to scroll up!), otherwise we cannot help you!')
+        q.put(languages["othererr1"])
+        q.put(languages["othererr2"])
+        q.put(languages["othererr3"])
+        q.put(languages["othererr4"])
+        q.put(languages["othererr5"])
+        q.put(languages["othererr6"])
         raise e
     except KeyboardInterrupt as e:
-        q.put('Stopping...')
+        q.put(languages["keyboardinterrupt"])
     else:
-        q.put('success!')
+        q.put(languages["success"])
     finally:
         stopped = True
 
@@ -270,12 +279,12 @@ def start():
     if not stopped:
         stopped = True
         return
-    write('starting...')
+    write(languages["start1"])
     if (video_in_path is None) or (image_in_path is None) or (video_out_path is None):
-        write('error: files must be selected')
+        write(languages["start2"])
         return
     if run_lock.locked():
-        write('error: already started!')
+        write(languages["start3"])
         return
     stopped = False
     threading.Thread(target=worker_thread, args=(video_in_path, image_in_path, video_out_path, use_cpu.get(), relative.get())).start()
@@ -301,29 +310,29 @@ class Yanderify(Frame):
     def create_widgets(self):
         global st
         master = self.master
-        c = Checkbutton(master, text='I don\'t have NVIDIA >=GTX750', variable=use_cpu)
+        c = Checkbutton(master, text=languages["class1"], variable=use_cpu)
         c.grid(row=0, column=0)
-        video_in = Button(master, text='Select Video', command=video_in_cb)
+        video_in = Button(master, text=languages["class2"], command=video_in_cb)
         video_in.grid(row=0, column=1)
-        image_in = Button(master, text='Select Image', command=image_in_cb)
+        image_in = Button(master, text=languages["class3"], command=image_in_cb)
         image_in.grid(row=0, column=2)
-        video_out = Button(master, text='Select Output', command=video_out_cb)
+        video_out = Button(master, text=languages["class4"], command=video_out_cb)
         video_out.grid(row=0, column=3)
-        kitty_button = Button(master, text='∞ kitties', command=show_kitty)
+        kitty_button = Button(master, text=languages["class5"], command=show_kitty)
         kitty_button.grid(row=0, column=4)
-        self.go = Button(master, text='Go', command=start)
+        self.go = Button(master, text=languages["class6"], command=start)
         self.go.grid(row=1, column=4)
         self.progress_bar = Progressbar(master, orient=HORIZONTAL, mode='determinate', length=500)
         self.progress_bar.grid(row=1, column=0, columnspan=4)
         st = scrolledtext.ScrolledText(master, state=DISABLED)
         st.grid(row=2, column=0, columnspan=5, rowspan=7)
-        write('Started Yanderify 3.0.6-alpha-0')
-        write('Warning: This is not a stable release and should not be treated as such.')
-        write('Disclaimer: CPU mode on low-end computers or most laptops generally will cause the system to lock-up.')
-        write('We are not liable if you freeze your PC by refusing to listen to this advice.')
-        write('Written by dunnousername#8672.')
-        write('heavily inspired by windy\'s efforts')
-        adv_toggle = Button(master, text='Toggle advanced settings', command=adv_toggle_cmd)
+        write(languages["class7"])
+        write(languages["class8"])
+        write(languages["class9"])
+        write(languages["class10"])
+        write(languages["class11"])
+        write(languages["class12"])
+        adv_toggle = Button(master, text=languages["class13"], command=adv_toggle_cmd)
         adv_toggle.grid(row=9, column=0, columnspan=5)
         self.adv_panel = Frame(master)
         adv_relative = Checkbutton(self.adv_panel, text='Relative', variable=relative)
@@ -340,7 +349,7 @@ class Yanderify(Frame):
             else:
                 self.adv_panel.grid_remove()
         self.progress_bar['value'] = 100 * min(1.0, progress / max(progress_max, 1.0))
-        self.go['text'] = 'Go' if stopped else 'Stop'
+        self.go['text'] = languages["class14"] if stopped else languages["class15"]
         try:
             while True:
                 msg = q.get(block=False)
