@@ -2,6 +2,20 @@
 
 由 LZY 翻译为简体中文。
 
+欢迎加入更多语言的翻译
+
+方法：
+
+在Languages目录下加入“语言名称.json”，并且做好翻译。
+
+你可以用以下方法查看Windows正在使用的语言名称：
+
+```python
+>>> import locale
+>>> locale.getdefaultlocale()[0]
+'zh_CN'
+```
+
 [English Version 英文版本](README-EN.md)
 
 ## Yanderify现在被称为 first-order-wrapper ，以更准确地描述其功能。
