@@ -1,12 +1,10 @@
 # coding: utf-8
 
 import locale
-sys_language = locale.getdefaultlocale()
-if "zh" in sys_language[0]:
-    sys_language = "Chinese"
-else:
-    sys_language = "English"
 import json
+
+sys_language = locale.getdefaultlocale()
+sys_language = sys_language[0]
 with open(sys_language+".json", "r", encoding="utf-8") as f:
     languages = json.load(f)
 
