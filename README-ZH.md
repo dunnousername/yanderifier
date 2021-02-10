@@ -21,7 +21,7 @@ first-order-wrapper 是围绕 [first-order-model](https://github.com/AliaksandrS
 ## 工作原理
 
 双击 `yanderify.exe` yanderify.exe将弹出一个看起来像这样的窗口：
-![程序截图（在中国大陆可能无法显示）](readme_mats/ss1.png)
+![程序截图（在中国大陆可能无法显示）](readme_mats/ss2.png)
 
 - “我没有 >=GTX750 的NVIDIA显卡”：选中此选项将启用CPU模式，这会慢很多，但对于没有兼容图形卡的用户来说，这是唯一的方法。
 - “选择视频”：单击此将显示文件选择框。 该文件应该是您想要为新面孔设置动画的视频； 换句话说，该视频将“驱动”图像以相同的方式移动。
