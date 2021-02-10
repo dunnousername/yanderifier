@@ -6,44 +6,44 @@ import getpass
 import locale
 sys_language = locale.getdefaultlocale()
 if "zh" in sys_language[0]:
-    sys_language = "chinese"
+    sys_language = "Chinese"
 else:
-    sys_language = "english"
+    sys_language = "English"
 import json
-with open("languages.json", "r", encoding="utf-8") as f:
+with open(sys_language+".json", "r", encoding="utf-8") as f:
     languages = json.load(f)
 
 # 根据 discord 用户的建议
 # as per suggestion of a discord user
 stories = [
     [
-        (0, languages["hhelper1"][sys_language]),
-        (2, languages["hhelper2"][sys_language]),
-        (6, languages["hhelper3"][sys_language]),
-        (8, languages["hhelper4"][sys_language]),
-        (10, languages["hhelper5"][sys_language])
+        (0, languages["hhelper1"]),
+        (2, languages["hhelper2"]),
+        (6, languages["hhelper3"]),
+        (8, languages["hhelper4"]),
+        (10, languages["hhelper5"])
     ],
     [
-        (0, languages["hhelper6"][sys_language]),
-        (4, languages["hhelper7"][sys_language]),
-        (5, languages["hhelper8"][sys_language]),
-        (8, languages["hhelper9"][sys_language]),
-        (10, languages["hhelper10"][sys_language])
+        (0, languages["hhelper6"]),
+        (4, languages["hhelper7"]),
+        (5, languages["hhelper8"]),
+        (8, languages["hhelper9"]),
+        (10, languages["hhelper10"])
     ],
     [
-        (0, languages["hhelper11"][sys_language]),
-        (2, languages["hhelper12"][sys_language]),
-        (4, languages["hhelper13"][sys_language]),
-        (8, languages["hhelper14"][sys_language]),
-        (10, languages["hhelper15"][sys_language])
+        (0, languages["hhelper11"]),
+        (2, languages["hhelper12"]),
+        (4, languages["hhelper13"]),
+        (8, languages["hhelper14"]),
+        (10, languages["hhelper15"])
     ],
     [
-        (0, languages["hhelper16"][sys_language]),
-        (2, languages["hhelper17"][sys_language]),
-        (5, languages["hhelper18"][sys_language]),
-        (6, languages["hhelper19"][sys_language]),
-        (7, languages["hhelper20"][sys_language]),
-        (10, languages["hhelper21"][sys_language])
+        (0, languages["hhelper16"]),
+        (2, languages["hhelper17"]),
+        (5, languages["hhelper18"]),
+        (6, languages["hhelper19"]),
+        (7, languages["hhelper20"]),
+        (10, languages["hhelper21"])
     ]
 ]
 
@@ -79,4 +79,3 @@ class HHelper:
         self.forward(10)
         self.sleep()
         self.sleep()
-        

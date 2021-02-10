@@ -3,14 +3,14 @@
 import locale
 sys_language = locale.getdefaultlocale()
 if "zh" in sys_language[0]:
-    sys_language = "chinese"
+    sys_language = "Chinese"
 else:
-    sys_language = "english"
+    sys_language = "English"
 import json
-with open("languages.json", "r", encoding="utf-8") as f:
+with open(sys_language+".json", "r", encoding="utf-8") as f:
     languages = json.load(f)
 
-print(languages["loading"][sys_language])
+print(languages["loading"])
 
 import hhelper
 import warnings
@@ -109,7 +109,7 @@ def video_in_cb():
     if x is not None:
         if len(x) > 0:
             video_in_path = x
-            write(languages["new_video_input_path"][sys_language].format(video_in_path))
+            write(languages["new_video_input_path"].format(video_in_path))
 
 def image_in_cb():
     global image_in_path
@@ -117,7 +117,7 @@ def image_in_cb():
     if x is not None:
         if len(x) > 0:
             image_in_path = x
-            write(languages["new_image_input_path"][sys_language].format(image_in_path))
+            write(languages["new_image_input_path"].format(image_in_path))
 
 def video_out_cb():
     global video_out_path
@@ -133,12 +133,12 @@ def trace(stage, inputs, aux=None):
     sep = '==========================='
     (type_, value, tb) = sys.exc_info()
     q.put(sep)
-    q.put(languages["err_msg_1"][sys_language])
-    q.put(languages["err_msg_2"][sys_language])
-    q.put(languages["err_msg_3"][sys_language])
-    q.put(languages["err_msg_4"][sys_language].format(type_.__name__, stage))
-    q.put(languages["err_msg_5"][sys_language].format(str(value)))
-    q.put(languages["err_msg_6"][sys_language])
+    q.put(languages["err_msg_1"])
+    q.put(languages["err_msg_2"])
+    q.put(languages["err_msg_3"])
+    q.put(languages["err_msg_4"].format(type_.__name__, stage))
+    q.put(languages["err_msg_5"].format(str(value)))
+    q.put(languages["err_msg_6"])
     for s in traceback.format_tb(tb):
         q.put(s)
     q.put('<log>')
@@ -147,7 +147,7 @@ def trace(stage, inputs, aux=None):
     q.put('<inputs>')
     q.put(inputs)
     q.put('</inputs>')
-    q.put(languages["err_msg_7"][sys_language])
+    q.put(languages["err_msg_7"])
     q.put(sep)
 
 def acceptable_resolution(x, y):
@@ -204,13 +204,13 @@ def worker_thread(vid0n, img0n, vid1n, cpu, relative):
         global checkpoints
         with run_lock:
             if not (cpu == checkpoints['cpu']):
-                q.put(languages["reloading_checkpoints"][sys_language])
+                q.put(languages["reloading_checkpoints"])
                 checkpoints['cpu'] = cpu
                 reload()
-                q.put(languages["finished_loading_checkpoints"][sys_language])
+                q.put(languages["finished_loading_checkpoints"])
             if os.path.isfile('tmp.mp4'):
                 os.remove('tmp.mp4')
-            q.put(languages["loading_sources"][sys_language])
+            q.put(languages["loading_sources"])
             vid0r = imageio.get_reader(vid0n)
             fps = vid0r.get_meta_data()['fps']
             vid0 = []
@@ -230,13 +230,13 @@ def worker_thread(vid0n, img0n, vid1n, cpu, relative):
             size = acceptable_resolution(size[0], size[1])
             img0 = resize(img0, (256, 256))[..., :3]
             vid1 = imageio.get_writer('tmp.mp4', fps=fps)
-            q.put(languages["sources_loaded"][sys_language])
+            q.put(languages["sources_loaded"])
             for frame in make_animation_modified(img0, iter(vid0), checkpoints['g'], checkpoints['kp'], cpu=cpu, relative=relative):
                 vid1.append_data(img_as_ubyte(resize(frame, size)))
                 progress += 1
-            print(languages["writing_output_to_file"][sys_language])
+            print(languages["writing_output_to_file"])
             vid1.close()
-            q.put(languages["muxing_audio_streams_into_output_file"][sys_language])
+            q.put(languages["muxing_audio_streams_into_output_file"])
             cmd = shlex.split('ffmpeg -y -hide_banner -loglevel warning -i tmp.mp4 -i')
             cmd.append(vid0n)
             cmd.extend(shlex.split('-map 0:v -map 1:a -movflags faststart -c:v libx264 -pix_fmt yuv420p -x264-params "nal-hrd=cbr" -b:v 1200K -minrate 1200K -maxrate 1200K -bufsize 2M'))
@@ -253,26 +253,26 @@ def worker_thread(vid0n, img0n, vid1n, cpu, relative):
             e.output
         )
         trace('ffmpeg', [vid0n, img0n, vid1n], aux=msg)
-        q.put(languages["suberr1"][sys_language])
-        q.put(languages["suberr2"][sys_language])
+        q.put(languages["suberr1"])
+        q.put(languages["suberr2"])
         shutil.copy('tmp.mp4', vid1n)
-        q.put(languages["suberr3"][sys_language])
-        q.put(languages["suberr4"][sys_language])
+        q.put(languages["suberr3"])
+        q.put(languages["suberr4"])
         raise e
     except Exception as e:
         msg = 'cpu={}'.format(cpu)
         trace('predict', [vid0n, img0n, vid1n], aux=msg)
-        q.put(languages["othererr1"][sys_language])
-        q.put(languages["othererr2"][sys_language])
-        q.put(languages["othererr3"][sys_language])
-        q.put(languages["othererr4"][sys_language])
-        q.put(languages["othererr5"][sys_language])
-        q.put(languages["othererr6"][sys_language])
+        q.put(languages["othererr1"])
+        q.put(languages["othererr2"])
+        q.put(languages["othererr3"])
+        q.put(languages["othererr4"])
+        q.put(languages["othererr5"])
+        q.put(languages["othererr6"])
         raise e
     except KeyboardInterrupt as e:
-        q.put(languages["keyboardinterrupt"][sys_language])
+        q.put(languages["keyboardinterrupt"])
     else:
-        q.put(languages["success"][sys_language])
+        q.put(languages["success"])
     finally:
         stopped = True
 
@@ -281,12 +281,12 @@ def start():
     if not stopped:
         stopped = True
         return
-    write(languages["start1"][sys_language])
+    write(languages["start1"])
     if (video_in_path is None) or (image_in_path is None) or (video_out_path is None):
-        write(languages["start2"][sys_language])
+        write(languages["start2"])
         return
     if run_lock.locked():
-        write(languages["start3"][sys_language])
+        write(languages["start3"])
         return
     stopped = False
     threading.Thread(target=worker_thread, args=(video_in_path, image_in_path, video_out_path, use_cpu.get(), relative.get())).start()
@@ -312,29 +312,29 @@ class Yanderify(Frame):
     def create_widgets(self):
         global st
         master = self.master
-        c = Checkbutton(master, text=languages["class1"][sys_language], variable=use_cpu)
+        c = Checkbutton(master, text=languages["class1"], variable=use_cpu)
         c.grid(row=0, column=0)
-        video_in = Button(master, text=languages["class2"][sys_language], command=video_in_cb)
+        video_in = Button(master, text=languages["class2"], command=video_in_cb)
         video_in.grid(row=0, column=1)
-        image_in = Button(master, text=languages["class3"][sys_language], command=image_in_cb)
+        image_in = Button(master, text=languages["class3"], command=image_in_cb)
         image_in.grid(row=0, column=2)
-        video_out = Button(master, text=languages["class4"][sys_language], command=video_out_cb)
+        video_out = Button(master, text=languages["class4"], command=video_out_cb)
         video_out.grid(row=0, column=3)
-        kitty_button = Button(master, text=languages["class5"][sys_language], command=show_kitty)
+        kitty_button = Button(master, text=languages["class5"], command=show_kitty)
         kitty_button.grid(row=0, column=4)
-        self.go = Button(master, text=languages["class6"][sys_language], command=start)
+        self.go = Button(master, text=languages["class6"], command=start)
         self.go.grid(row=1, column=4)
         self.progress_bar = Progressbar(master, orient=HORIZONTAL, mode='determinate', length=500)
         self.progress_bar.grid(row=1, column=0, columnspan=4)
         st = scrolledtext.ScrolledText(master, state=DISABLED)
         st.grid(row=2, column=0, columnspan=5, rowspan=7)
-        write(languages["class7"][sys_language])
-        write(languages["class8"][sys_language])
-        write(languages["class9"][sys_language])
-        write(languages["class10"][sys_language])
-        write(languages["class11"][sys_language])
-        write(languages["class12"][sys_language])
-        adv_toggle = Button(master, text=languages["class13"][sys_language], command=adv_toggle_cmd)
+        write(languages["class7"])
+        write(languages["class8"])
+        write(languages["class9"])
+        write(languages["class10"])
+        write(languages["class11"])
+        write(languages["class12"])
+        adv_toggle = Button(master, text=languages["class13"], command=adv_toggle_cmd)
         adv_toggle.grid(row=9, column=0, columnspan=5)
         self.adv_panel = Frame(master)
         adv_relative = Checkbutton(self.adv_panel, text='Relative', variable=relative)
@@ -351,7 +351,7 @@ class Yanderify(Frame):
             else:
                 self.adv_panel.grid_remove()
         self.progress_bar['value'] = 100 * min(1.0, progress / max(progress_max, 1.0))
-        self.go['text'] = languages["class14"][sys_language] if stopped else languages["class15"][sys_language]
+        self.go['text'] = languages["class14"] if stopped else languages["class15"]
         try:
             while True:
                 msg = q.get(block=False)
