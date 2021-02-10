@@ -1,9 +1,5 @@
 # coding: utf-8
 
-import hhelper
-import warnings
-import sys
-
 import locale
 sys_language = locale.getdefaultlocale()
 if "zh" in sys_language[0]:
@@ -15,6 +11,10 @@ with open("languages.json", "r", encoding="utf-8") as f:
     languages = json.load(f)
 
 print(languages["loading"][sys_language])
+
+import hhelper
+import warnings
+import sys
 
 if 'debug' not in sys.argv:
     warnings.simplefilter('ignore')
