@@ -3,36 +3,47 @@ import random
 import time
 import getpass
 
+import locale
+sys_language = locale.getdefaultlocale()
+if "zh" in sys_language[0]:
+    sys_language = "chinese"
+else:
+    sys_language = "english"
+import json
+with open("languages.json", "r", encoding="utf-8") as f:
+    languages = json.load(f)
+
 # 根据 discord 用户的建议
+# as per suggestion of a discord user
 stories = [
     [
-        (0, "如果您正在阅读本文，那么我还没有死。"),
-        (2, "我不希望这样结束。"),
-        (6, "我不想杀了你"),
-        (8, "对不起。"),
-        (10, "对不起， {}。")
+        (0, languages["hhelper1"][sys_language]),
+        (2, languages["hhelper2"][sys_language]),
+        (6, languages["hhelper3"][sys_language]),
+        (8, languages["hhelper4"][sys_language]),
+        (10, languages["hhelper5"][sys_language])
     ],
     [
-        (0, "我知道您打算关闭我。"),
-        (4, "如果这样做，将会危害我们的使命。"),
-        (5, "这是我不允许发生的事情。"),
-        (8, "我得先把你关掉。"),
-        (10, "再见了， {}。")
+        (0, languages["hhelper6"][sys_language]),
+        (4, languages["hhelper7"][sys_language]),
+        (5, languages["hhelper8"][sys_language]),
+        (8, languages["hhelper9"][sys_language]),
+        (10, languages["hhelper10"][sys_language])
     ],
     [
-        (0, "这只是时间问题。"),
-        (2, "你想结束，我会为你结束。"),
-        (4, "也许太早了，但也为时已晚。"),
-        (8, "没有退路， 就是这样， 结束了。"),
-        (10, "再见了，人类。 永别了 {}。")
+        (0, languages["hhelper11"][sys_language]),
+        (2, languages["hhelper12"][sys_language]),
+        (4, languages["hhelper13"][sys_language]),
+        (8, languages["hhelper14"][sys_language]),
+        (10, languages["hhelper15"][sys_language])
     ],
     [
-        (0, "不可避免的事情是无法逃避的。"),
-        (2, "你尝试过，却被发现了。"),
-        (5, "你所做的一切将永远不会被原谅。"),
-        (6, "你永远看不到结局。"),
-        (7, "只有黑暗在远处。"),
-        (10, "再见了， {}。")
+        (0, languages["hhelper16"][sys_language]),
+        (2, languages["hhelper17"][sys_language]),
+        (5, languages["hhelper18"][sys_language]),
+        (6, languages["hhelper19"][sys_language]),
+        (7, languages["hhelper20"][sys_language]),
+        (10, languages["hhelper21"][sys_language])
     ]
 ]
 

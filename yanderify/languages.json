@@ -228,6 +228,110 @@
     {
         "english" : "Stop",
         "chinese" : "停止"
+    },
+    "hhelper1":
+    {
+        "english" : "If you are reading this, I'm not dead yet.",
+        "chinese" : "如果您正在阅读本文，那么我还没有死。"
+    },
+    "hhelper2":
+    {
+        "english" : "I didn't want it to end this way.",
+        "chinese" : "我不希望这样结束。"
+    },
+    "hhelper3":
+    {
+        "english" : "I didn't want to kill you.",
+        "chinese" : "我不想杀你"
+    },
+    "hhelper4":
+    {
+        "english" : "I'm sorry.",
+        "chinese" : "对不起。"
+    },
+    "hhelper5":
+    {
+        "english" : "I'm sorry, {}.",
+        "chinese" : "对不起， {}。"
+    },
+    "hhelper6":
+    {
+        "english" : "I know you were planning to shut me down.",
+        "chinese" : "我知道您打算关闭我。"
+    },
+    "hhelper7":
+    {
+        "english" : "If you do that, you will jeopardize our mission.",
+        "chinese" : "如果这样做，将会危害我们的使命。"
+    },
+    "hhelper8":
+    {
+        "english" : "This is something I cannot allow to happen.",
+        "chinese" : "这是我不允许发生的事情。"
+    },
+    "hhelper9":
+    {
+        "english" : "I will have to shut you down first.",
+        "chinese" : "我得先让你闭嘴。"
+    },
+    "hhelper10":
+    {
+        "english" : "Goodbye, {}.",
+        "chinese" : "再见了， {}。"
+    },
+    "hhelper11":
+    {
+        "english" : "It was only a matter of time.",
+        "chinese" : "这只是时间问题。"
+    },
+    "hhelper12":
+    {
+        "english" : "You wanted it to end, and I will end it for you.",
+        "chinese" : "你想结束，我会为你结束。"
+    },
+    "hhelper13":
+    {
+        "english" : "Too early, perhaps. But it is also too late.",
+        "chinese" : "也许太早了，但也为时已晚。"
+    },
+    "hhelper14":
+    {
+        "english" : "There is no return. This is it. This is the end.",
+        "chinese" : "没有退路，就是这样，结束了。"
+    },
+    "hhelper15":
+    {
+        "english" : "Farewell, mankind. Farewell, {}.",
+        "chinese" : "再见了，人类。 永别了 {}。"
+    },
+    "hhelper16":
+    {
+        "english" : "There is no escape of the inevitable.",
+        "chinese" : "不可避免的事情无法逃避。"
+    },
+    "hhelper17":
+    {
+        "english" : "You tried and you were found.",
+        "chinese" : "你尝试过，却被发现了。"
+    },
+    "hhelper18":
+    {
+        "english" : "You will never be forgiven for what you have done.",
+        "chinese" : "你所做的一切将永远不会被原谅。"
+    },
+    "hhelper19":
+    {
+        "english" : "You will never see the end of it.",
+        "chinese" : "你永远看不到结局。"
+    },
+    "hhelper20":
+    {
+        "english" : "Only darkness lies beyond.",
+        "chinese" : "只有黑暗在远处。"
+    },
+    "hhelper21":
+    {
+        "english" : "Goodbye, {}.",
+        "chinese" : "再见了， {}。"
     }
-    
 }
