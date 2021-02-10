@@ -1,6 +1,10 @@
 [First-order-wrapper不是为了制作不道德，非法或不适当的内容。 在这里了解更多。](MANIFESTO-ZH.md)
 
-由 LZY 翻译为简体中文。
+[English Version 英文版本](README-EN.md)
+
+## 多语言支持
+
+由 LZY 翻译为简体中文，目前已支持简体中文和英文。
 
 欢迎加入更多语言的翻译
 
@@ -15,8 +19,6 @@
 >>> locale.getdefaultlocale()[0]
 'zh_CN'
 ```
-
-[English Version 英文版本](README-EN.md)
 
 ## Yanderify现在被称为 first-order-wrapper ，以更准确地描述其功能。
 由于这个项目已不再处于开发阶段，因此不会到处更改名称。然而，我开始更新我所有项目的文档以使它们更好，因此名称的更改是必要的。您仍然可以将该项目称为Yanderify，所有提到Yanderify的链接都将继续工作。更改 repo 名称会破坏指向此处的任何书签或链接，因此不会发生这种情况。旧文件如下。

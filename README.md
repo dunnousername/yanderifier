@@ -2,6 +2,22 @@
 
 [Simplified Chinese version 简体中文版本](README-ZH.md)
 
+## Multi-language support
+
+Simplified Chinese is now supported. Welcome to add more language translations.
+
+The way:
+
+Add `LANGUAGENAME.json` in the `Languages` directory and translate it to other languages.
+
+You can check the language name that Windows is using in the following ways:
+
+```python
+>>> import locale
+>>> locale.getdefaultlocale()[0]
+'zh_CN'
+```
+
 ## Yanderify is now known as first-order-wrapper to more accurately describe its function.
 Since this project is no longer in active development, the name won't be changed everywhere.
 However, I'm starting to update documentation on all of my projects to make them better, so the name change felt neccessary.
